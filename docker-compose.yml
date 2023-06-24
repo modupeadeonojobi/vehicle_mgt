@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  lps-db:
+    image: postgres
+    container_name: lsp-db
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "lekki_property_service_development"
+      POSTGRES_USER: "imodupsy"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+    networks:
+      - lekki-property-service-network
+
+  lps-pgadmin:
+    image: dpage/pgadmin4
+    container_name: lsp-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "user@lsp.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    ports:
+      - "15432:80"
+    depends_on:
+      - lps-db
+    networks:
+      - lekki-property-service-network
+
+  lps-api:
+    image: lsp-api
+    container_name: lsp-api
+    build: .
+    environment:
+      - DBHOST=lsp-db
+      - DBUSER=imodupsy
+      - DBPASS=root
+    volumes:
+      - .:/lekki-property-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - lps-db
+    networks:
+      - lekki-property-service-network
+
+networks:
+  lekki-property-service-network:
+    driver: bridge
+
+volumes:
+  postgres:
