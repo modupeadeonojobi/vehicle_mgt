@@ -12,14 +12,12 @@ default: &default
 
 development:
   <<: *default
-  database: lekki_property_service_development
+  database: lps_develop
 
 test:
   <<: *default
-  database: lekki_property_service_test
+  database: lps_test
 
 production:
   <<: *default
-  database: lekki_property_service_production
-  username: lekki_property_service
-  password: <%= ENV["LEKKI_PROPERTY_SERVICE_DATABASE_PASSWORD"] %>
+  database: lps_production

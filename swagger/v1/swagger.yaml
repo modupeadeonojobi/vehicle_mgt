@@ -1,0 +1,370 @@
+openapi: 3.0.3
+info:
+  title: Lekki Property Service API
+  version: 1.0.0
+  description: API for managing properties
+  contact:
+    email: modupeadeonojobi@gmail.com
+
+tags:
+  - name: Properties
+    description: Endpoints for managing properties
+
+paths:
+  /api/v1/properties:
+    get:
+      summary: Get all properties
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Property'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Create a property
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                     $ref: '#/components/schemas/Property'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/properties/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the property
+        schema:
+          type: integer
+    get:
+      summary: Get a property by ID
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                     $ref: '#/components/schemas/Property'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Update a property
+      tags:
+        - Properties
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the property
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyUpdateInput'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                     $ref: '#/components/schemas/Property'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/properties/owner/{owner}:
+    parameters:
+      - in: path
+        name: owner
+        required: true
+        description: Owner name
+        schema:
+          type: string
+    get:
+      summary: Retrieve multiple properties for a given owner
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Property'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/properties/address/{address}:
+    parameters:
+      - in: path
+        name: address
+        required: true
+        description: Property address
+        schema:
+          type: string
+    get:
+      summary: Get a property by address
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/Property'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/properties/filter:
+    get:
+      summary: Retrieve multiple properties using additional filters
+      tags:
+        - Properties
+      parameters:
+        - in: query
+          name: property_owner
+          required: false
+          description: Owner name
+          schema:
+            type: string
+        - in: query
+          name: number_of_bedrooms
+          required: false
+          description: Number of bedrooms
+          schema:
+            type: integer
+        - in: query
+          name: number_of_bathrooms
+          required: false
+          description: Number of bathrooms
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Property'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Property:
+      type: object
+      properties:
+        id:
+          type: integer
+        property_address:
+          type: string
+        property_type:
+          type: string
+          enum:
+            - flat
+            - house
+            - condos
+            - cabin
+            - apartment
+            - ranch
+        number_of_bedrooms:
+          type: integer
+        number_of_sitting_rooms:
+          type: integer
+        number_of_kitchens:
+          type: integer
+        number_of_bathrooms:
+          type: integer
+        number_of_toilets:
+          type: integer
+        property_owner:
+          type: string
+        description:
+          type: string
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+
+    PropertyInput:
+      type: object
+      required:
+        - property_address
+        - property_type
+        - number_of_bedrooms
+        - number_of_sitting_rooms
+        - number_of_kitchens
+        - number_of_bathrooms
+        - number_of_toilets
+        - property_owner
+        - description
+        - valid_from
+        - valid_to
+      properties:
+        property_address:
+          type: string
+        property_type:
+          type: string
+          enum:
+            - flat
+            - house
+            - condos
+            - cabin
+            - apartment
+            - ranch
+        number_of_bedrooms:
+          type: integer
+        number_of_sitting_rooms:
+          type: integer
+        number_of_kitchens:
+          type: integer
+        number_of_bathrooms:
+          type: integer
+        number_of_toilets:
+          type: integer
+        property_owner:
+          type: string
+        description:
+          type: string
+        valid_from:
+          type: string
+          format: date-time
+        valid_to:
+          type: string
+          format: date-time
+
+    PropertyUpdateInput:
+      type: object
+      properties:
+        description:
+          type: string
+        number_of_bedrooms:
+          type: integer
+        number_of_sitting_rooms:
+          type: integer
+        number_of_kitchens:
+          type: integer
+        number_of_bathrooms:
+          type: integer
+        number_of_toilets:
+          type: integer
+        valid_to:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object

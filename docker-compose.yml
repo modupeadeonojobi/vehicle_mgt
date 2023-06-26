@@ -3,23 +3,28 @@ version: '3.8'
 services:
   lps-db:
     image: postgres
-    container_name: lsp-db
+    container_name: lps-db
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: "lekki_property_service_development"
+      POSTGRES_DB: "lps_develop"
       POSTGRES_USER: "imodupsy"
       POSTGRES_PASSWORD: "root"
     ports:
       - "5432:5432"
     networks:
       - lekki-property-service-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U imodupsy -d lps_develop"]
+      interval: 5s
+      timeout: 1s
+      retries: 10
 
   lps-pgadmin:
     image: dpage/pgadmin4
-    container_name: lsp-pgadmin
+    container_name: lps-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: "user@lsp.com"
+      PGADMIN_DEFAULT_EMAIL: "admin@lps.com"
       PGADMIN_DEFAULT_PASSWORD: "password"
     ports:
       - "15432:80"
@@ -29,11 +34,11 @@ services:
       - lekki-property-service-network
 
   lps-api:
-    image: lsp-api
-    container_name: lsp-api
+    image: lps-api
+    container_name: lps-api
     build: .
     environment:
-      - DBHOST=lsp-db
+      - DBHOST=lps-db
       - DBUSER=imodupsy
       - DBPASS=root
     volumes:
@@ -41,7 +46,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - lps-db
+      lps-db: 
+        condition: service_healthy
     networks:
       - lekki-property-service-network
 
