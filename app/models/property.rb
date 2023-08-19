@@ -5,8 +5,23 @@ class Property < ApplicationRecord
   validates :description, presence: true, length: {maximum: 500}
   validates :valid_from, :valid_to, presence: true
   validates :valid_to, comparison: { greater_than: :valid_from }
+  validate :validate_property_address
 
   enum property_type: { flat: 0, house: 1, cabin: 2, condos: 3, ranch: 4, apartment: 5 }
 
  
+  private
+
+  def validate_property_address
+
+    require 'opencage/geocoder'
+
+    geocoder = OpenCage::Geocoder.new(api_key: ENV['OPENCAGE_API_KEY'])
+    results = geocoder.geocode(property_address)
+
+    if results.empty?
+      errors.add(:property_address, 'This address is not invalid')
+    end
+
+  end
 end

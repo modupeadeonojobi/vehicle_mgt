@@ -1,8 +1,44 @@
 class Api::V1::PropertiesController < ApplicationController
+
   def index
-    properties = Property.order('created_at DESC')
-    render json: {status: 'SUCCESS', message:'Loaded properties', data:properties}
+    page = params[:page].to_i.positive? ? params[:page].to_i : 1
+    per_page = params[:per_page].to_i.positive? ? params[:per_page].to_i : 10
+  
+    properties = filter_properties
+    paginated_properties = properties.page(page).per(per_page)
+  
+    render_paginated_properties(paginated_properties)
   end
+  
+  
+  def filter_properties
+    if property_filter_params.present?
+      Property.where(property_filter_params).order(created_at: :desc)
+    else
+      Property.order(created_at: :desc)
+    end
+  end
+  
+  def render_paginated_properties(properties)
+    if properties.any?
+      pagination_data = {
+        total_pages: properties.total_pages,
+        current_page: properties.current_page,
+        per_page: properties.limit_value
+      }
+  
+      render json: {
+        status: 'SUCCESS',
+        message: 'Properties loaded',
+        data: properties,
+        paging: pagination_data
+      }
+    else
+      render json: { status: 'ERROR', message: 'No properties found', data: [] }
+    end
+  end
+  
+
 
 
   def show
@@ -13,17 +49,6 @@ class Api::V1::PropertiesController < ApplicationController
     else
       render json: {status: 'ERROR', message:'Property not found', data:{}}
     end
-  end
-
-
-  def filter_properties
-    properties = Property.where(property_filter_params)
-
-        if properties.present?
-          render json: { status: 'SUCCESS', message: 'Filtered properties loaded', data: properties }
-        else
-          render json: { status: 'ERROR', message: 'No properties found for the given filters', data: [] }
-        end
   end
 
 
@@ -55,7 +80,7 @@ class Api::V1::PropertiesController < ApplicationController
     if property.save
       render json: {status: 'SUCCESS', message:'Saved property', data:property},status: :ok
     else
-      render json: {status: 'ERROR', message:'Property not saved', data:property.errors},status: :unprocessable_entity
+      render json: {status: 'ERROR', message: 'Property not saved', error: property.errors},status: :unprocessable_entity
     end
   end
 
@@ -64,9 +89,9 @@ class Api::V1::PropertiesController < ApplicationController
     property = Property.find(params[:id])
 
     if property.update(property_update_params)
-      render json: {status: 'SUCCESS', message:'Updated property', data:property},status: :ok
+      render json: {status: 'SUCCESS', message: 'Updated property', data: property},status: :ok
     else
-      render json: {status: 'ERROR', message:'Property not updated', data:property.errors},status: :unprocessable_entity
+      render json: {status: 'ERROR', message: 'Property not updated', error: property.errors},status: :unprocessable_entity
     end
   end
 

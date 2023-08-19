@@ -1,24 +1,59 @@
-# README
+# Lekki Property Service API 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Welcome to the Lekki Property Service API. This API allows you to manage properties in the Lekki area, providing endpoints for various property-related operations. This document provides a comprehensive guide on how to use the API.
 
-Things you may want to cover:
+## Install
 
-* Ruby version
+#### Prerequisites
 
-* System dependencies
+The setups steps expect following tools installed on the system.
 
-* Configuration
+- Docker
+- Ruby [3.2.2](https://www.ruby-lang.org/en/downloads/)
+- Rails [7.0.5](https://rubyonrails.org/)
 
-* Database creation
+##### 1. Check out the repository
 
-* Database initialization
+```bash
+git clone git@github.com:modupeadeonojobi/lekki-property-service.
+cd lekki-property-service
+```
 
-* How to run the test suite
+##### 2. Create database.yml file
 
-* Services (job queues, cache servers, search engines, etc.)
+Copy the sample database.yml file and edit the database configuration as required.
 
-* Deployment instructions
+```bash
+cp config/database.yml.sample config/database.yml
+```
 
-* ...
+##### 3. Create and setup the database
+
+Run the following commands to create and setup the database.
+
+```ruby
+rails db:create db:migrate db:seed
+```
+
+##### 5. Install the required gems using Bundler
+
+Run the following commands to install the necessary gems.
+
+```ruby
+bundle install
+```
+
+##### 6. Get API key
+
+This project uses opencage geocoder for address validation. Get your API key from their site [OpenCage](https://opencagedata.com/)
+
+##### 7. Start the Rails server
+
+You can start the rails server using the command given below.
+
+```ruby
+docker-compose build && docker-compose up
+```
+
+And now you can visit the site with the URL http://localhost:3000
+To see the swagger documentation navigate to http://localhost:3000/api-docs/index.html

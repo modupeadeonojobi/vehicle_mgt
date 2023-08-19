@@ -4,9 +4,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :properties, only: [:index, :create, :update]
-      get 'properties/address/:address', to: 'properties#get_by_address'
-      get 'properties/owner/:owner', to: 'properties#get_by_owner'
-      get 'properties/filter', to: 'properties#filter_properties'
+      get 'properties/addresses/:address', to: 'properties#get_by_address'
+      get 'properties/owners/:owner', to: 'properties#get_by_owner'
       get 'properties/:id', to: 'properties#show'
     end
   end 

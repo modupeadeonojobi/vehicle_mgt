@@ -25,3 +25,7 @@ module LekkiPropertyService
     config.api_only = true
   end
 end
+
+if defined?(Dotenv)
+  Dotenv::Railtie.load
+end

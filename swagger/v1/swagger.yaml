@@ -16,6 +16,41 @@ paths:
       summary: Get all properties
       tags:
         - Properties
+      parameters:
+        - in: query
+          name: property_owner
+          required: false
+          description: Owner name
+          schema:
+            type: string
+        - in: query
+          name: number_of_bedrooms
+          required: false
+          description: Number of bedrooms
+          schema:
+            type: integer
+        - in: query
+          name: number_of_bathrooms
+          required: false
+          description: Number of bathrooms
+          schema:
+            type: integer
+        - in: query
+          name: page
+          required: false
+          description: Page number for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          description: Number of items per page for pagination
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
       responses:
         '200':
           description: OK
@@ -32,12 +67,13 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Property'
-        '400':
-          description: Bad Request
+        '404':
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithData'
+
     post:
       summary: Create a property
       tags:
@@ -67,7 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithError'
 
   /api/v1/properties/{id}:
     parameters:
@@ -100,7 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithData'
     put:
       summary: Update a property
       tags:
@@ -137,9 +173,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithError'
 
-  /api/v1/properties/owner/{owner}:
+  /api/v1/properties/owners/{owner}:
     parameters:
       - in: path
         name: owner
@@ -172,9 +208,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithData'
 
-  /api/v1/properties/address/{address}:
+  /api/v1/properties/addresses/{address}:
     parameters:
       - in: path
         name: address
@@ -205,54 +241,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorResponseWithData'
 
-  /api/v1/properties/filter:
-    get:
-      summary: Retrieve multiple properties using additional filters
-      tags:
-        - Properties
-      parameters:
-        - in: query
-          name: property_owner
-          required: false
-          description: Owner name
-          schema:
-            type: string
-        - in: query
-          name: number_of_bedrooms
-          required: false
-          description: Number of bedrooms
-          schema:
-            type: integer
-        - in: query
-          name: number_of_bathrooms
-          required: false
-          description: Number of bathrooms
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Property'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -359,7 +349,7 @@ components:
           type: string
           format: date-time
 
-    ErrorResponse:
+    ErrorResponseWithData:
       type: object
       properties:
         status:
@@ -367,4 +357,14 @@ components:
         message:
           type: string
         data:
+          type: object
+
+    ErrorResponseWithError:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        error:
           type: object

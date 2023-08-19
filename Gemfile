@@ -47,3 +47,9 @@ end
 
 gem 'rswag-api'
 gem 'rswag-ui'
+
+gem "kaminari", "~> 1.2"
+
+gem "opencage-geocoder", "~> 3.1"
+
+gem 'dotenv-rails', require: 'dotenv/rails-now'
