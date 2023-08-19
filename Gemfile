@@ -52,4 +52,4 @@ gem "kaminari", "~> 1.2"
 
 gem "opencage-geocoder", "~> 3.1"
 
-gem 'dotenv-rails', require: 'dotenv/rails-now'
+gem 'dotenv-rails'

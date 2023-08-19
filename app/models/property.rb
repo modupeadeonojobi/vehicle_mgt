@@ -14,13 +14,11 @@ class Property < ApplicationRecord
 
   def validate_property_address
 
-    require 'opencage/geocoder'
-
     geocoder = OpenCage::Geocoder.new(api_key: ENV['OPENCAGE_API_KEY'])
     results = geocoder.geocode(property_address)
 
     if results.empty?
-      errors.add(:property_address, 'This address is not invalid')
+      errors.add(:property_address, 'This address is invalid')
     end
 
   end

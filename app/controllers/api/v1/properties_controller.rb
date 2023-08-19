@@ -74,15 +74,17 @@ class Api::V1::PropertiesController < ApplicationController
   end
 
 
-  def create
-    property = Property.new(property_params)
 
+  def create
+    property = Property.new(property_params) 
+  
     if property.save
-      render json: {status: 'SUCCESS', message:'Saved property', data:property},status: :ok
+      render json: { status: 'SUCCESS', message: 'Saved property', data: property }, status: :ok
     else
-      render json: {status: 'ERROR', message: 'Property not saved', error: property.errors},status: :unprocessable_entity
+      render json: { status: 'ERROR', message: 'Property not saved', error: property.errors }, status: :unprocessable_entity
     end
   end
+  
 
 
   def update 
@@ -99,11 +101,11 @@ class Api::V1::PropertiesController < ApplicationController
   private
 
   def property_params
-    params.permit(:property_address, :property_type, :number_of_bedrooms, :number_of_sitting_rooms, :number_of_kitchens, :number_of_bathrooms, :number_of_toilets, :property_owner, :description, :valid_from, :valid_to)
+    params.require(:property).permit(:property_address, :property_type, :number_of_bedrooms, :number_of_sitting_rooms, :number_of_kitchens, :number_of_bathrooms, :number_of_toilets, :property_owner, :description, :valid_from, :valid_to)
   end
 
   def property_update_params
-    params.permit(:number_of_bedrooms, :number_of_sitting_rooms, :number_of_kitchens, :number_of_bathrooms, :number_of_toilets, :description, :valid_to)
+    params.require(:property).permit(:number_of_bedrooms, :number_of_sitting_rooms, :number_of_kitchens, :number_of_bathrooms, :number_of_toilets, :description, :valid_to)
   end
 
   def property_filter_params
