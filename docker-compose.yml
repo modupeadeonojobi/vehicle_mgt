@@ -1,6 +1,23 @@
 version: '3.8'
 
 services:
+  lps-api:
+    image: lps-api
+    container_name: lps-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DBHOST=lps-db
+      - DBUSER=imodupsy
+      - DBPASS=root
+    volumes:
+      - .:/lekki-property-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - lps-db
+
   lps-db:
     image: postgres
     container_name: lps-db
@@ -12,13 +29,6 @@ services:
       POSTGRES_PASSWORD: "root"
     ports:
       - "5432:5432"
-    networks:
-      - lekki-property-service-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U imodupsy -d lps_develop"]
-      interval: 5s
-      timeout: 1s
-      retries: 10
 
   lps-pgadmin:
     image: dpage/pgadmin4
@@ -30,30 +40,6 @@ services:
       - "15432:80"
     depends_on:
       - lps-db
-    networks:
-      - lekki-property-service-network
-
-  lps-api:
-    image: lps-api
-    container_name: lps-api
-    build: .
-    environment:
-      - DBHOST=lps-db
-      - DBUSER=imodupsy
-      - DBPASS=root
-    volumes:
-      - .:/lekki-property-service
-    ports:
-      - "3000:3000"
-    depends_on:
-      lps-db: 
-        condition: service_healthy
-    networks:
-      - lekki-property-service-network
-
-networks:
-  lekki-property-service-network:
-    driver: bridge
 
 volumes:
   postgres:
