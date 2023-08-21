@@ -35,7 +35,7 @@ Run the following commands to create and setup the database.
 rails db:create db:migrate db:seed
 ```
 
-##### 5. Install the required gems using Bundler
+##### 4. Install the required gems using Bundler
 
 Run the following commands to install the necessary gems.
 
@@ -43,17 +43,17 @@ Run the following commands to install the necessary gems.
 bundle install
 ```
 
-##### 6. Get API key
+##### 5. Get API key
 
 This project uses opencage geocoder for address validation. Get your API key from their site [OpenCage](https://opencagedata.com/)
 
 
 
-##### 7. Add env file
+##### 6. Add env file
 
 This project uses .env file. Create .env file in the root directory and add the following details. Do not update the DBHOST
 
-```bash
+```env
 DBHOST=lps-db
 DBUSER=
 DBPASS=
@@ -66,7 +66,7 @@ PGADMIN_DEFAULT_PASSWORD=
 ```
 
 
-##### 8. Start the Rails server
+##### 7. Start the Rails server
 
 You can start the rails server using the command given below.
 
@@ -75,4 +75,13 @@ docker-compose build && docker-compose up
 ```
 
 And now you can visit the site with the URL http://localhost:3000
-To see the swagger documentation navigate to http://localhost:3000/api-docs/index.html
+
+##### 8. Update swagger file
+
+To quickly access the Swagger page and test requests in this project, you can navigate to the 'swagger.yaml' file and temporarily comment out the specific lines of code.
+
+```yaml
+servers:
+  - url: https://lekki-property-service.onrender.com
+```
+To view the Swagger documentation, temporarily comment out the specified code and then visit http://localhost:3000/api-docs/index.html in your web browser.
