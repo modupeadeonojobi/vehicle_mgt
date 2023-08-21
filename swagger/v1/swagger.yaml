@@ -6,7 +6,7 @@ info:
   contact:
     email: modupeadeonojobi@gmail.com
 servers:
-  # - url: https://lekki-property-service.onrender.com
+  - url: https://lekki-property-service.onrender.com
 
 tags:
   - name: Properties
