@@ -1,19 +1,19 @@
 databases:
-  - name: lps_db
+  - name: property_app
     databaseName: property_app_1m6q
     user: property_app_1m6q_user
 
 services:
   - type: web
-    name: property_service
+    name: property
     runtime: ruby
     buildCommand: "./bin/render-build.sh"
-    startCommand: bundle exec rails s
+    startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
-      - key: RAILS_MASTER_KEY
-        sync: false
       - key: DATABASE_URL
         fromDatabase:
-          name: lsp-app
+          name: property_app
           property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
       
