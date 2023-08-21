@@ -3,14 +3,10 @@ version: '3.8'
 services:
   lps-api:
     image: lps-api
-    container_name: lps-api
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - DBHOST=lps-db
-      - DBUSER=imodupsy
-      - DBPASS=root
+    env_file: .env
     volumes:
       - .:/lekki-property-service
     ports:
@@ -20,22 +16,15 @@ services:
 
   lps-db:
     image: postgres
-    container_name: lps-db
+    env_file: .env
     volumes:
       - postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: "lps_develop"
-      POSTGRES_USER: "imodupsy"
-      POSTGRES_PASSWORD: "root"
     ports:
       - "5432:5432"
 
   lps-pgadmin:
     image: dpage/pgadmin4
-    container_name: lps-pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "admin@lps.com"
-      PGADMIN_DEFAULT_PASSWORD: "password"
+    env_file: .env
     ports:
       - "15432:80"
     depends_on:

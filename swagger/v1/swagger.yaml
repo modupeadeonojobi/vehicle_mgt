@@ -5,6 +5,8 @@ info:
   description: API for managing properties
   contact:
     email: modupeadeonojobi@gmail.com
+servers:
+  # - url: https://lekki-property-service.onrender.com
 
 tags:
   - name: Properties
@@ -368,3 +370,5 @@ components:
           type: string
         error:
           type: object
+
+

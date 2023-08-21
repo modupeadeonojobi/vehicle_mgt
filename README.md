@@ -47,7 +47,26 @@ bundle install
 
 This project uses opencage geocoder for address validation. Get your API key from their site [OpenCage](https://opencagedata.com/)
 
-##### 7. Start the Rails server
+
+
+##### 7. Add env file
+
+This project uses .env file. Create .env file in the root directory and add the following details. Do not update the DBHOST
+
+```bash
+DBHOST=lps-db
+DBUSER=
+DBPASS=
+OPENCAGE_API_KEY=
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+PGADMIN_DEFAULT_EMAIL=
+PGADMIN_DEFAULT_PASSWORD=
+```
+
+
+##### 8. Start the Rails server
 
 You can start the rails server using the command given below.
 
