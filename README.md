@@ -52,7 +52,6 @@ This project uses .env file. Create .env file in the root directory and add the 
 DBHOST=
 DBUSER=
 DBPASS=
-OPENCAGE_API_KEY=
 POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
