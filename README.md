@@ -1,6 +1,6 @@
-# Lekki Property Service API 
+# Vehicle Management API 
 
-Welcome to the Lekki Property Service API. This API allows you to manage properties in the Lekki area, providing endpoints for various property-related operations. This document provides a comprehensive guide on how to use the API.
+It offers endpoints for listing vehicles, creating new ones, viewing individual vehicle details, updating vehicle information, and deleting vehicles while requiring user authentication for security.
 
 ## Install
 
@@ -15,8 +15,8 @@ The setups steps expect following tools installed on the system.
 ##### 1. Check out the repository
 
 ```bash
-git clone git@github.com:modupeadeonojobi/lekki-property-service.
-cd lekki-property-service
+git clone git@github.com:modupeadeonojobi/vehicle_mgt
+cd vehicle_mgt
 ```
 
 ##### 2. Create database.yml file
@@ -43,18 +43,13 @@ Run the following commands to install the necessary gems.
 bundle install
 ```
 
-##### 5. Get API key
 
-This project uses opencage geocoder for address validation. Get your API key from their site [OpenCage](https://opencagedata.com/)
-
-
-
-##### 6. Add env file
+##### 5. Add env file
 
 This project uses .env file. Create .env file in the root directory and add the following details. Do not update the DBHOST
 
 ```env
-DBHOST=lps-db
+DBHOST=
 DBUSER=
 DBPASS=
 OPENCAGE_API_KEY=
@@ -66,7 +61,7 @@ PGADMIN_DEFAULT_PASSWORD=
 ```
 
 
-##### 7. Start the Rails server
+##### 6. Start the Rails server
 
 You can start the rails server using the command given below.
 
@@ -75,13 +70,3 @@ docker-compose build && docker-compose up
 ```
 
 And now you can visit the site with the URL http://localhost:3000
-
-##### 8. Update swagger file
-
-To quickly access the Swagger page and test requests in this project, you can navigate to the 'swagger.yaml' file and temporarily comment out the specific lines of code.
-
-```yaml
-servers:
-  - url: https://lekki-property-service.onrender.com
-```
-To view the Swagger documentation, temporarily comment out the specified code and then visit http://localhost:3000/api-docs/index.html in your web browser.

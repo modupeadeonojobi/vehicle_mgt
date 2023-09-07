@@ -1,20 +1,20 @@
 version: '3.8'
 
 services:
-  lps-api:
-    image: lps-api
+  vehicle-api:
+    image: vehicle-api
     build:
       context: .
       dockerfile: Dockerfile
     env_file: .env
     volumes:
-      - .:/lekki-property-service
+      - .:/vehicle_mgt
     ports:
       - "3000:3000"
     depends_on:
-      - lps-db
+      - vehicle-db
 
-  lps-db:
+  vehicle-db:
     image: postgres
     env_file: .env
     volumes:
@@ -22,13 +22,13 @@ services:
     ports:
       - "5432:5432"
 
-  lps-pgadmin:
+  vehicle-pgadmin:
     image: dpage/pgadmin4
     env_file: .env
     ports:
       - "15432:80"
     depends_on:
-      - lps-db
+      - vehicle-db
 
 volumes:
   postgres:

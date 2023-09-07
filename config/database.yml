@@ -12,11 +12,11 @@ default: &default
 
 development:
   <<: *default
-  database: lps_develop
+  database: <%= ENV['DB_DEV'] %>
 
 test:
   <<: *default
-  database: lps_test
+  database: <%= ENV['DB_TEST'] %>
 
 production:
   <<: *default

@@ -8,11 +8,11 @@ RUN apt-get update -qq && apt-get install -y postgresql-client
 RUN bundle config --global frozen 1
 
 # Set working directory
-WORKDIR /lekki-property-service
+WORKDIR /vehicle_mgt
 
 # Copy and install the project gems
-COPY Gemfile /lekki-property-service/Gemfile
-COPY Gemfile.lock /lekki-property-service/Gemfile.lock
+COPY Gemfile /vehicle_mgt/Gemfile
+COPY Gemfile.lock /vehicle_mgt/Gemfile.lock
 RUN bundle install
 
 # Run entrypoint.sh to delete server.pid

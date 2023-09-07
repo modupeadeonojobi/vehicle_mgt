@@ -10,24 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_25_172235) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_07_123637) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "properties", force: :cascade do |t|
-    t.string "property_address"
-    t.integer "number_of_bedrooms"
-    t.integer "number_of_sitting_rooms"
-    t.integer "number_of_kitchens"
-    t.integer "number_of_bathrooms"
-    t.integer "number_of_toilets"
-    t.string "property_owner"
-    t.text "description"
-    t.datetime "valid_from"
-    t.datetime "valid_to"
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "property_type", default: 0
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string "name"
+    t.integer "state", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
